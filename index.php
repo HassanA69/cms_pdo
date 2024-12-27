@@ -3,6 +3,7 @@ include "partials/header.php";
 include "partials/navbar.php";
 include "partials/hero.php";
 $db = new Database();
+
 ?>
 
 
@@ -64,5 +65,5 @@ $db = new Database();
 
 <?php
 include "partials/footer.php";
-echo "hello";
+
 ?>
