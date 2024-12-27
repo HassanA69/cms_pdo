@@ -64,5 +64,5 @@ $db = new Database();
 
 <?php
 include "partials/footer.php";
-
+echo "hello";
 ?>
