@@ -2,6 +2,14 @@
 include "partials/header.php";
 include "partials/navbar.php";
 
+$user = new User();
+
+// Check if user is already logged in
+if ($user->isLoggedIn()) {
+    redirect('admin.php');
+}
+
+// Login form submission
 if (isPostRequest()) {
 
     $email = getRequestData("email");

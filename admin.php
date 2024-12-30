@@ -1,18 +1,31 @@
 <?php
 include "partials/admin/admin_header.php";
 include "partials/admin/admin_navbar.php";
+$user = new User();
+$article = new Article();
+
+
+// Check if user is logged in and redirect to login page if not
+if (!$user->isLoggedIn()) {
+    redirect('error.php');
+}
+$userID = $_SESSION['user_id'];
+
+// Get user's articles
+$userArticles = $article->get_by_user_id($userID);
+
 
 ?>
 
 <!-- Main Content -->
 <main class="container my-5">
-    <h2 class="mb-4">Admin Dashboard</h2>
+    <h2 class="mb-4">Welcome <?php echo $_SESSION['username']; ?> to Admin Dashboard</h2>
 
     <!-- Articles Table -->
     <div class="table-responsive">
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark">
-                <tr>
+                <tr class="text-center">
                     <th>ID</th>
                     <th>Title</th>
                     <th>Author</th>
@@ -22,35 +35,24 @@ include "partials/admin/admin_navbar.php";
                 </tr>
             </thead>
             <tbody>
-                <!-- Example Article Row -->
-                <tr>
-                    <td>1</td>
-                    <td>Article Title 1</td>
-                    <td>Edwin Diaz</td>
-                    <td>January 1, 2045</td>
-                    <td>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus feugiat elit vitae enim lacinia semper...
-                    </td>
-                    <td>
-                        <a href="edit-article.html?id=1" class="btn btn-sm btn-primary me-1">Edit</a>
-                        <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>
-                    </td>
-                </tr>
-                <!-- Additional Article Rows -->
-                <tr>
-                    <td>2</td>
-                    <td>Article Title 2</td>
-                    <td>Jose Diaz</td>
-                    <td>February 15, 2045</td>
-                    <td>
-                        Quisque fermentum, nisl a pulvinar tincidunt, nunc purus laoreet massa, nec tempor arcu urna vel nisi...
-                    </td>
-                    <td>
-                        <a href="edit-article.html?id=2" class="btn btn-sm btn-primary me-1">Edit</a>
-                        <button class="btn btn-sm btn-danger" onclick="confirmDelete(2)">Delete</button>
-                    </td>
-                </tr>
-                <!-- You can add more articles here -->
+                <?php if (!empty($userArticles)): ?>
+                    <?php foreach ($userArticles as $articleItem): ?>
+                        <!-- Example Article Row -->
+                        <tr>
+                            <td><?php echo $articleItem->id ?></td>
+                            <td><?php echo $articleItem->title ?></td>
+                            <td><?php echo $_SESSION['username'] ?></td>
+                            <td><?php echo format_date($articleItem->created_at); ?></td>
+                            <td>
+                                <?php echo $article->get_Excerpt($articleItem->content) ?>
+                            </td>
+                            <td class="d-flex align-items-center">
+                                <a href="edit-article.php?id=<?php echo $articleItem->id ?>" class="btn btn-sm btn-primary me-1">Edit</a>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

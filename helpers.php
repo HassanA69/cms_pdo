@@ -36,6 +36,7 @@ function asset_url($path)
     return base_url('assets/') . ltrim($path, '/');
 }
 
+
 // redirect
 
 function redirect($url)
@@ -55,4 +56,10 @@ function  isPostRequest()
 function getRequestData($field, $value = null)
 {
     return isset($_POST[$field]) ? trim($_POST[$field]) : $value;
+}
+ 
+
+function format_date($date)
+{
+    return date('m-j-Y', strtotime($date));
 }

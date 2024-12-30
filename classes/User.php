@@ -11,6 +11,7 @@ class User
         $this->conn = $database->getConnection();
     }
 
+    // register function
     public function  register($username, $email, $password)
     {
 
@@ -28,6 +29,7 @@ class User
         return false;
     }
 
+    // login function
     public function login($email, $password)
     {
         $query = "SELECT * FROM " . $this->table . " WHERE email = :email ";
@@ -36,8 +38,19 @@ class User
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         if ($user && password_verify($password, $user->password)) {
-            return $user->id;
+            $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = $user->username;
+            $_SESSION['email'] = $user->email;
+            $_SESSION['user_id'] = $user->id;
+
+            return true;
         }
         return false;
+    }
+
+    // check if user is logged in
+    public function isLoggedIn()
+    {
+        return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     }
 }

@@ -2,6 +2,15 @@
 include "partials/header.php";
 include "partials/navbar.php";
 
+
+// Check if user is already logged in
+$user = new User();
+if ($user->isLoggedIn()) {
+    redirect('admin.php');
+}
+
+
+// Register form submission
 if (isPostRequest()) {
     $username = getRequestData("username");
     $email = getRequestData("email");
