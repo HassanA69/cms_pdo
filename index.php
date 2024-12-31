@@ -23,13 +23,13 @@ $articles = $article->get_all();
             <div class="row mb-4">
                 <div class="col-md-4">
                     <!-- check if image exist -->
-                    <?php if (empty($articleItem->image)): ?>
-                        <img href="<?php echo base_url("article.php?id=$articleItem->id") ?>"
-                            src="<?php echo upload_path($articleItem->image) ?>" class="img-fluid" alt="Blog Post Image" style="width: 350px;height: 200px">
+                    <?php if (!empty($articleItem->image)): ?>
+                        <img
+                            src="<?php echo htmlspecialchars($articleItem->image)  ?>" class="img-fluid rounded shadow-lg" alt="Blog Post Image" style="width: 350px;height: 200px">
 
                     <?php else: ?>
 
-                        <img href="<?php echo base_url("article.php?id=$articleItem->id") ?>" src="https://placehold.co/350x200" class="img-fluid" alt="Blog Post Image">
+                        <img src="https://placehold.co/350x200" class="img-fluid rounded shadow-lg" alt="Blog Post Image">
 
                     <?php endif; ?>
                     <!-- End of check -->

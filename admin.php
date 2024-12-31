@@ -5,10 +5,7 @@ $user = new User();
 $article = new Article();
 
 
-// Check if user is logged in and redirect to login page if not
-if (!$user->isLoggedIn()) {
-    redirect('error.php');
-}
+
 $userID = $_SESSION['user_id'];
 
 // Get user's articles
@@ -47,8 +44,17 @@ $userArticles = $article->get_by_user_id($userID);
                                 <?php echo $article->get_Excerpt($articleItem->content) ?>
                             </td>
                             <td class="d-flex align-items-center">
+                                
+                                <!-- Edit button -->
                                 <a href="edit-article.php?id=<?php echo $articleItem->id ?>" class="btn btn-sm btn-primary me-1">Edit</a>
-                                <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>
+
+                                <!-- Delet button -->
+                                <form method="post" action="<?php echo base_url('delete_article.php') ?>">
+                                    <input name="article_id" value="<?php echo $articleItem->id ?>" type="hidden">
+                                    <!-- <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button> -->
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete(<?php echo $articleItem->id ?>)">Delete</button>
+
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

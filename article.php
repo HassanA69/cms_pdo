@@ -24,26 +24,22 @@ if ($articleID) {
 
 
     <!-- Featured Image -->
-    <div class="mb-4">
-        <?php if (empty($articleData->image)): ?>
-
-
+    <div class="col-md-6 mx-auto text-center my-4">
+        <?php if (!empty($articleData->image)): ?>
             <img
-                src="<?php echo htmlspecialchars($articleData->image)  ?>"
-                class="img-fluid w-100"
+                src="<?php echo htmlspecialchars($articleData->image); ?>"
+                class="img-fluid rounded shadow-lg border"
                 alt="Featured Image"
-                style="width: 1000px;height: 500px">
-
-
+                style="max-height: 400px; object-fit: cover;">
         <?php else: ?>
             <img
                 src="https://placehold.co/1000x500"
-                class="img-fluid w-100"
-                alt="Featured Image"
-                style="width: 1000px;height: 500px">
-
+                class="img-fluid rounded shadow-lg border"
+                alt="Placeholder Image"
+                style="max-height: 400px; object-fit: cover;">
         <?php endif; ?>
     </div>
+
 
 
     </section>

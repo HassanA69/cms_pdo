@@ -14,7 +14,7 @@ class Article
     }
 
 
-    public function get_Excerpt($content, $length = 150)
+    public function get_Excerpt($content, $length = 100)
     {
         if (strlen($content) >=  $length) {
 
@@ -109,4 +109,64 @@ class Article
     {
         return date('m-j-Y', strtotime($date));
     }
+
+
+
+    // create new article
+    public function create($title, $content, $author_id, $created_at, $image)
+    {
+
+        $query = "INSERT INTO " . $this->table . " (title, content, user_id, image, created_at) 
+                VALUES (:title, :content, :author_id, :image, :created_at) ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":title", $title, PDO::PARAM_STR);
+
+        $stmt->bindParam(":content", $content, PDO::PARAM_STR);
+
+        $stmt->bindParam(":author_id", $author_id, PDO::PARAM_INT);
+
+        $stmt->bindParam(":image", $image, PDO::PARAM_STR);
+
+        $stmt->bindParam(":created_at", $created_at, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+
+    // delete article with image
+
+    public function  deleteArticleWithImage($id)
+    {
+        $articles = $this->get_by_id($id);
+
+        if ($articles) {
+
+            if ($articles->id === $_SESSION['user_id']) {
+
+                if (!empty($articles->image) &&  file_exists($articles->image)) {
+
+                    if (!unlink($articles->image)) {
+                        return false;
+                    }
+                }
+
+                $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+                return $stmt->execute();
+            } else {
+                redirect('admin.php');
+            }
+        }
+        return false;
+    }
+
+
+    // update article with image
+    public function updateArticle($title, $content, $image) {}
 }

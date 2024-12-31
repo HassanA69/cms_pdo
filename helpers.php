@@ -57,9 +57,20 @@ function getRequestData($field, $value = null)
 {
     return isset($_POST[$field]) ? trim($_POST[$field]) : $value;
 }
- 
+
 
 function format_date($date)
 {
     return date('m-j-Y', strtotime($date));
+}
+
+// chech status
+function chechUserLoggedIn()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user_id'])) {
+        redirect('login.php');
+    }
 }

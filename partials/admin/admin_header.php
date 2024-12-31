@@ -3,7 +3,11 @@
 
 
 include __DIR__ . '/../../init.php';
-
+// Check if user is logged in and redirect to login page if not
+$user = new User();
+if (!$user->isLoggedIn()) {
+    redirect('error.php');
+}
 
 ?>
 
